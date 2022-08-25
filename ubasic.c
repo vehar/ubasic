@@ -107,8 +107,7 @@ static void accept(int token)
 {
     if (token != tokenizer_token())
     {
-        DEBUG_PRINTF("Token not what was expected (expected %d, got %d)\n", token,
-                     tokenizer_token());
+        DEBUG_PRINTF("Unexpected token(exp %d, got %d)\n", token, tokenizer_token());
         tokenizer_error_print();
         exit(1);
     }
@@ -296,9 +295,7 @@ static char const *index_find(int linenum)
 static void index_add(int linenum, char const *sourcepos)
 {
     if (line_index_head != NULL && index_find(linenum))
-    {
         return;
-    }
 
     struct line_index *new_lidx;
 
@@ -332,10 +329,10 @@ static void jump_linenum_slow(int linenum)
                 tokenizer_next();
             } while (tokenizer_token() != TOKENIZER_CR &&
                      tokenizer_token() != TOKENIZER_ENDOFINPUT);
+
             if (tokenizer_token() == TOKENIZER_CR)
-            {
                 tokenizer_next();
-            }
+
         } while (tokenizer_token() != TOKENIZER_NUMBER);
         DEBUG_PRINTF("jump_linenum_slow: Found line %d\n", tokenizer_num());
     }
@@ -643,18 +640,15 @@ int ubasic_finished(void) { return ended || tokenizer_finished(); }
 void ubasic_set_variable(int varnum, VARIABLE_TYPE value)
 {
     if (varnum >= 0 && varnum <= MAX_VARNUM)
-    {
         variables[varnum] = value;
-    }
 }
 /*---------------------------------------------------------------------------*/
 VARIABLE_TYPE
 ubasic_get_variable(int varnum)
 {
     if (varnum >= 0 && varnum <= MAX_VARNUM)
-    {
         return variables[varnum];
-    }
+
     return 0;
 }
 /*---------------------------------------------------------------------------*/

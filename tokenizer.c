@@ -140,9 +140,7 @@ static int get_next_token(void)
     DEBUG_PRINTF("get_next_token(): '%s'\n", ptr);
 
     if (*ptr == 0)
-    {
         return TOKENIZER_ENDOFINPUT;
-    }
 
     if (isdigit(*ptr))
     {
@@ -222,11 +220,8 @@ int tokenizer_token(void) { return current_token; }
 /*---------------------------------------------------------------------------*/
 void tokenizer_next(void)
 {
-
     if (tokenizer_finished())
-    {
         return;
-    }
 
     DEBUG_PRINTF("tokenizer_next: %p\n", nextptr);
     ptr = nextptr;
@@ -263,27 +258,24 @@ void tokenizer_string(char *dest, int len)
     int string_len;
 
     if (tokenizer_token() != TOKENIZER_STRING)
-    {
         return;
-    }
+
     string_end = strchr(ptr + 1, '"');
     if (string_end == NULL)
-    {
         return;
-    }
+
     string_len = string_end - ptr - 1;
     if (len < string_len)
-    {
         string_len = len;
-    }
+
     memcpy(dest, ptr + 1, string_len);
     dest[string_len] = 0;
 }
 /*---------------------------------------------------------------------------*/
 void tokenizer_error_print(void) { DEBUG_PRINTF("tokenizer_error_print: '%s'\n", ptr); }
-/*---------------------------------------------------------------------------*/
+
 int tokenizer_finished(void) { return *ptr == 0 || current_token == TOKENIZER_ENDOFINPUT; }
-/*---------------------------------------------------------------------------*/
+
 int tokenizer_variable_num(void) { return *ptr - 'a'; }
-/*---------------------------------------------------------------------------*/
+
 char const *tokenizer_pos(void) { return ptr; }
