@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}
+
+{
+    "editor.formatOnSave": true
+}
+
+{
+    "clang-format.executable": "A:\ubasic\.clang-format"
+}

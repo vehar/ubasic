@@ -29,10 +29,11 @@
  *
  */
 
-#include <time.h>
-#include <stdio.h>
-#include <assert.h>
 #include "ubasic.h"
+#include <assert.h>
+#include <stdio.h>
+#include <time.h>
+
 
 static const char program_let[] =
 "10 let a = 42\n\
@@ -76,59 +77,56 @@ static const char program_peek_poke[] =
 50 end\n";
 
 /*---------------------------------------------------------------------------*/
-VARIABLE_TYPE peek(VARIABLE_TYPE arg) {
-    return arg;
-}
+VARIABLE_TYPE peek(VARIABLE_TYPE arg) { return arg; }
 
 /*---------------------------------------------------------------------------*/
-void poke(VARIABLE_TYPE arg, VARIABLE_TYPE value) {
-    assert(arg == value);
-}
+void poke(VARIABLE_TYPE arg, VARIABLE_TYPE value) { assert(arg == value); }
 
 /*---------------------------------------------------------------------------*/
-void run(const char program[]) {
-  static int test_num = 0;
-  test_num++;
-  printf("Running test #%u... ", test_num);
-  fflush(stdout);
-
-  clock_t start_t, end_t;
-  double delta_t;
-
-  start_t = clock();
-
-  ubasic_init_peek_poke(program, &peek, &poke);
-
-  do {
-    ubasic_run();
-  } while(!ubasic_finished());
-
-  end_t = clock();
-  delta_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
-
-  printf("done. Run time: %.3f s\n", delta_t);
-}
-
-/*---------------------------------------------------------------------------*/
-int
-main(void)
+void run(const char program[])
 {
-  run(program_let);
-  assert(ubasic_get_variable(0) == 42);
+    static int test_num = 0;
+    test_num++;
+    printf("Running test #%u... ", test_num);
+    fflush(stdout);
 
-  run(program_goto);
-  assert(ubasic_get_variable(2) == 108);
+    clock_t start_t, end_t;
+    double delta_t;
 
-  run(program_loop);
-  assert(ubasic_get_variable(0) == (VARIABLE_TYPE)(126 * 126 * 10));
+    start_t = clock();
 
-  run(program_fibs);
-  assert(ubasic_get_variable(1) == 89);
+    ubasic_init_peek_poke(program, &peek, &poke);
 
-  run(program_peek_poke);
-  assert(ubasic_get_variable(0) == 123);
-  assert(ubasic_get_variable(25) == 123);
+    do
+    {
+        ubasic_run();
+    } while (!ubasic_finished());
 
-  return 0;
+    end_t = clock();
+    delta_t = (double)(end_t - start_t) / CLOCKS_PER_SEC;
+
+    printf("done. Run time: %.3f s\n", delta_t);
+}
+
+/*---------------------------------------------------------------------------*/
+int main(void)
+{
+    run(program_let);
+    assert(ubasic_get_variable(0) == 42);
+
+    run(program_goto);
+    assert(ubasic_get_variable(2) == 108);
+
+    run(program_loop);
+    assert(ubasic_get_variable(0) == (VARIABLE_TYPE)(126 * 126 * 10));
+
+    run(program_fibs);
+    assert(ubasic_get_variable(1) == 89);
+
+    run(program_peek_poke);
+    assert(ubasic_get_variable(0) == 123);
+    assert(ubasic_get_variable(25) == 123);
+
+    return 0;
 }
 /*---------------------------------------------------------------------------*/

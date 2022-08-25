@@ -41,15 +41,15 @@ static const char program[] =
 110 return\n";
 
 /*---------------------------------------------------------------------------*/
-int
-main(void)
+int main(void)
 {
-  ubasic_init(program);
+    ubasic_init(program);
 
-  do {
-    ubasic_run();
-  } while(!ubasic_finished());
+    do
+    {
+        ubasic_run();
+    } while (!ubasic_finished());
 
-  return 0;
+    return 0;
 }
 /*---------------------------------------------------------------------------*/
